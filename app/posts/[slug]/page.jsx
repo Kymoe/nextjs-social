@@ -1,9 +1,14 @@
+import { prisma } from '@/lib/prisma';
 import React from 'react'
- export const revalidate=60;
+ //export const revalidate=60;
 export default async function PostDetail({params}) {
-     const posts = await fetch("http://localhost:3000/api/posts").then((res)=>res.json());
+   
 
-       const post=posts.find((item)=>item.slug===params.slug);
+       const post=await prisma.post.findUnique({
+         where:{
+           slug:params.slug,
+         }
+       })
       // console.log({post})
 
   return (

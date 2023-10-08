@@ -1,18 +1,19 @@
+import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 //export const dynamic='force-dynamic';
 export const dynamic='force-static';
-export const revalidate=360;
+export const revalidate=360; 
+export {prisma}
 
 export async function generateStaticParams(){
-   const posts = await fetch("http://localhost:3000/api/posts").then((res) =>
-     res.json()
-   );
+   const posts = await prisma.post.findMany()
+   
    return posts.map((post)=>({slug:post.slug}))
 }
 
 
 export default async function Home() {
-  const posts = await fetch("http://localhost:3000/api/posts").then((res)=>res.json());
+  const posts = await prisma.post.findMany()
  
  
   return (
